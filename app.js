@@ -1,29 +1,27 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const TelegramBot = require('node-telegram-bot-api');
 
 const app = express();
-const port = 3999;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-const botToken = '';
-const bot = new TelegramBot(botToken, { polling: true });
+app.post('/sendMessage', (req, res) => {
+  const token = req.body.bot;
+  const bot = new TelegramBot(token, {polling: false});
+  const chatId = req.body.canal;
+  const messageInfo = req.body.info;
+  const message = `${messageInfo.name}: ${messageInfo.text}`;
 
-app.post('/send-message', (req, res) => {
-  const { bot, canal, info } = req.body;
-
-  const message = `Sending !!!`;
-  bot.sendMessage(canal, message)
+  bot.sendMessage(chatId, message)
     .then(() => {
       res.status(200).send('Message envoyé avec succès');
     })
-    .catch(error => {
-      console.error('Erreur lors de l\'envoi du message Telegram:', error);
-      res.status(500).send('Erreur lors de l\'envoi du message Telegram');
+    .catch((error) => {
+      res.status(500).send('Erreur lors de l\'envoi du message : ' + error);
     });
 });
 
+const port = 3999;
 app.listen(port, () => {
-  console.log(`API écoutant sur le port ${port}`);
+  console.log(`Serveur Express écoutant sur le port ${port}`);
 });
