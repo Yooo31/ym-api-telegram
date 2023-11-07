@@ -21,7 +21,7 @@ app.post('/sendMessage', (req, res) => {
   }
   const bot = new TelegramBot(token, {polling: false});
   const messageInfo = req.body.info;
-  const message = `${messageInfo.name}: ${messageInfo.text}`;
+  const message = `${messageInfo.name}\n ${messageInfo.text}`;
 
   bot.sendMessage(chatId, message)
     .then(() => {
