@@ -6,9 +6,17 @@ const app = express();
 app.use(express.json());
 
 app.post('/sendMessage', (req, res) => {
-  const token = req.body.bot;
+  let token;
+  let chatId;
+
+  if (req.body.config == 'portfolio-yoan') {
+    token = process.env['PORTFOLIO_YOAN_BOT'];
+    chatId =process.env['PORTFOLIO_YOAN_CANAL'];
+  } else {
+    token = req.body.bot;
+    chatId = req.body.canal;
+  }
   const bot = new TelegramBot(token, {polling: false});
-  const chatId = req.body.canal;
   const messageInfo = req.body.info;
   const message = `${messageInfo.name}: ${messageInfo.text}`;
 
