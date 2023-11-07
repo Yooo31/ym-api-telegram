@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const TelegramBot = require('node-telegram-bot-api');
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 
@@ -31,5 +33,5 @@ app.post('/sendMessage', (req, res) => {
 
 const port = 3999;
 app.listen(port, () => {
-  console.log(`Serveur Express écoutant sur le port ${port}`);
+  console.log(`Telegram bot sender running on ${port}`);
 });
